@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+  <head>
+    
+     <meta charset="UTF-8">
+    
+    <title>TRF parser </title>
+
+
+  
+<!--
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-easyui-themes/ui-cupertino_perso/easyui.css') }}" />
+-->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/default/easyui.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/icon.css') }}" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.min.js') }}" /></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.easyui.min.js') }}" /></script>
+  
+
+
+  </head>
+  <body>    
+    <div id="header">
+      <h1> Parser of Tandem Repeat Finder output (version: {{ version }})</h1>
+    </div>
+    
+    <div id="container">
+		
+      <form id="exec" method="post" action="/exec" enctype="multipart/form-data">
+        <div class="easyui-accordion" data-options="multiple:true">
+    
+             <div title="Synopsis" style="overflow:auto;padding:10px;" data-options="iconCls:'icon-ok',collapsed:true,collapsible:true">
+             <div style="padding:10px 60px 20px 60px">
+   
+				TRF  is a program able to detect tandem repeat in DNA sequences. 
+				If sequences include several occurences of arrays including the repeats 5'-TTAGGTTAGGTTAGGGTTAG-3', 
+				they can be annotated by different consensus (TTAGGG, TAGGGT, AGGGTT, ...) according to the starting pattern of the array.
+				Furthermore, arrays on the other strand will be annotated with the complementary consensus (CCCTAA, CCTAAC, CTAACC, ...).
+				<br>
+				The TRF parser will add a column with the same tag for all the permutated patterns. 
+				Optionally, the same tag can be used for complementary  patterns.
+				
+				<a href="https://tandem.bu.edu/trf/trf.html">TRF</a>.
+			  </div>
+			</div>
+   
+            <div title="Download" style="overflow:auto;padding:10px;" data-options="iconCls:'icon-ok',collapsed:true,collapsible:true">
+             <div style="padding:10px 60px 20px 60px">
+   
+				A standalone version of the parser is available for download:
+				<ul>
+					<li>the main program: <a href="static/trf_parser.py">trf_parser.py</a>
+					<li>the associated library: <a href="static/mylib_trf.py">mylib_trf.py</a>
+					<li>an example file: <a href="static/example.dat">example.dat</a>
+					
+				</ul>
+    
+				The program need python (version 3). The program have been evaluated with the version 4.09 of 
+				<a href="https://tandem.bu.edu/trf/trf.html">TRF</a>.
+			  </div>
+			</div>
+			
+			
+			
+              <div title="Web server" style="overflow:auto;padding:10px;" data-options="iconCls:'icon-ok',collapsed:false,collapsible:true">
+                <div style="padding:10px 60px 20px 60px">
+                    <table>
+ 						<tr><td class="legend" colspan ="2">File:</td>
+                        <tr><td class="label" colspan="1" style="width:500px">TRF output<font color="red">*</font>:</td>
+                        <td colspan = "1"> 
+                        <input class="easyui-filebox" name="input1" data-options="prompt:'trf file...', required:true" style="width:400px"></td>
+                      </tr>
+                    </table>
+                    <table>
+                          <tr>
+    						<tr><td class="legend" colspan ="2">Options:</td>
+                   	        <tr><td colspan = "1"  style="width:500px"> Merge complement patterns: </td>
+                      	     <td colspan = "1"  style="width:30px"><input class="easyui-numberbox" name="complement"   id="complement" data-options="required:true,precision:0,min:0,value:1"></input></td> 
+                        	 <td colspan = "1"  style="width:70px"> [1 yes-0 no] </td>
+                    	  </tr>                         
+  <!--                       <tr>
+                      	     <td colspan = "1"  style="width:500px"> Merge overlapping patterns: </td>
+                      	     <td colspan = "1"  style="width:30px"><input class="easyui-numberbox" name="overlap"   id="overlap" data-options="required:true,precision:0,min:0,value:1"></input></td> 
+                        	 <td colspan = "1"  style="width:70px"> [1 yes-0 no] </td>
+                    	  </tr>    
+  -->                     
+  
+  
+                    </table>
+                   	<br><br>Click on "submit" to run the web server on the example file. Results are conserved {{days}} days before deletion.
+
+                    <div style="text-align:center;padding-top:50px">
+                      <a class="easyui-linkbutton" iconCls="icon-ok" onclick="submitForm()">Submit</a>
+                      <a class="easyui-linkbutton" iconCls="icon-reload" onclick="refresh(); this.form.reset();">Refresh</a>
+                   </div>
+                   
+                 
+                </div>
+              </div>  
+        </div>  
+      </form>   
+    </div>
+    <div id="footer">     
+        <p>Loic Ponger</p>
+        <p>Laboratoire Structure et Instabilité des Génomes</p>
+    </div>
+    
+    <div id="dd" class="easyui-dialog" title="Job is running" style="width:400px;height:200px;"
+    	data-options="iconCls:'icon-save',buttons:[],closable:false,closed:true,resizable:true,modal:true">
+    	Your job is running ... 
+    </div>
+    
+    <script>
+    
+    // submission form
+    function submitForm(){  
+        $('#exec').submit();
+    }
+   // previous submission form
+    function submitForm_previous(){  
+        $('#exec_previous').submit();
+    }
+      
+    </script>
+
+
+
+    
+  </body>
+</html>
